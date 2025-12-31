@@ -34,6 +34,7 @@ from nnunetv2.utilities.json_export import recursive_fix_for_json_export
 from nnunetv2.utilities.label_handling.label_handling import determine_num_input_channels
 from nnunetv2.utilities.plans_handling.plans_handler import PlansManager, ConfigurationManager
 from nnunetv2.utilities.utils import create_lists_from_splitted_dataset_folder
+from nnunetv2.paths import default_device
 
 
 class nnUNetPredictor(object):
@@ -42,7 +43,7 @@ class nnUNetPredictor(object):
                  use_gaussian: bool = True,
                  use_mirroring: bool = True,
                  perform_everything_on_device: bool = True,
-                 device: torch.device = torch.device('cuda'),
+                 device: torch.device = torch.device(default_device),
                  verbose: bool = False,
                  verbose_preprocessing: bool = False,
                  allow_tqdm: bool = True):
@@ -814,7 +815,7 @@ def predict_entry_point_modelfolder():
                              'out-of-RAM issues. Default: 3')
     parser.add_argument('-prev_stage_predictions', type=str, required=False, default=None,
                         help='Folder containing the predictions of the previous stage. Required for cascaded models.')
-    parser.add_argument('-device', type=str, default='cuda', required=False,
+    parser.add_argument('-device', type=str, default=default_device, required=False,
                         help="Use this to set the device the inference should run with. Available options are 'cuda' "
                              "(GPU), 'cpu' (CPU) and 'mps' (Apple M1/M2). Do NOT use this to set which GPU ID! "
                              "Use CUDA_VISIBLE_DEVICES=X nnUNetv2_predict [...] instead!")
@@ -923,7 +924,7 @@ def predict_entry_point():
                              'num_parts - 1. So when you submit 5 nnUNetv2_predict calls you need to set -num_parts '
                              '5 and use -part_id 0, 1, 2, 3 and 4. Simple, right? Note: You are yourself responsible '
                              'to make these run on separate GPUs! Use CUDA_VISIBLE_DEVICES (google, yo!)')
-    parser.add_argument('-device', type=str, default='cuda', required=False,
+    parser.add_argument('-device', type=str, default=default_device, required=False,
                         help="Use this to set the device the inference should run with. Available options are 'cuda' "
                              "(GPU), 'cpu' (CPU) and 'mps' (Apple M1/M2). Do NOT use this to set which GPU ID! "
                              "Use CUDA_VISIBLE_DEVICES=X nnUNetv2_predict [...] instead!")
@@ -1026,7 +1027,7 @@ if __name__ == '__main__':
         use_gaussian=True,
         use_mirroring=True,
         perform_everything_on_device=True,
-        device=torch.device('cuda', 0),
+        device=torch.device(default_device),
         verbose=False,
         verbose_preprocessing=False,
         allow_tqdm=True

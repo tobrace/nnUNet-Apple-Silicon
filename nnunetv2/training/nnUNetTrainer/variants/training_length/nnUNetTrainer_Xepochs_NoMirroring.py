@@ -1,11 +1,12 @@
 import torch
+import os
 
 from nnunetv2.training.nnUNetTrainer.nnUNetTrainer import nnUNetTrainer
 
 
 class nnUNetTrainer_250epochs_NoMirroring(nnUNetTrainer):
     def __init__(self, plans: dict, configuration: str, fold: int, dataset_json: dict, 
-                 device: torch.device = torch.device('cuda')):
+                 device: torch.device = torch.device(os.environ.get('PYTORCH_DEVICE', 'cuda'))):
         super().__init__(plans, configuration, fold, dataset_json, device)
         self.num_epochs = 250
 
@@ -19,7 +20,7 @@ class nnUNetTrainer_250epochs_NoMirroring(nnUNetTrainer):
 
 class nnUNetTrainer_2000epochs_NoMirroring(nnUNetTrainer):
     def __init__(self, plans: dict, configuration: str, fold: int, dataset_json: dict, 
-                 device: torch.device = torch.device('cuda')):
+                 device: torch.device = torch.device(os.environ.get('PYTORCH_DEVICE', 'cuda'))):
         super().__init__(plans, configuration, fold, dataset_json, device)
         self.num_epochs = 2000
 
@@ -33,7 +34,7 @@ class nnUNetTrainer_2000epochs_NoMirroring(nnUNetTrainer):
     
 class nnUNetTrainer_4000epochs_NoMirroring(nnUNetTrainer):
     def __init__(self, plans: dict, configuration: str, fold: int, dataset_json: dict, 
-                 device: torch.device = torch.device('cuda')):
+                 device: torch.device = torch.device(os.environ.get('PYTORCH_DEVICE', 'cuda'))):
         super().__init__(plans, configuration, fold, dataset_json, device)
         self.num_epochs = 4000
 
@@ -47,7 +48,7 @@ class nnUNetTrainer_4000epochs_NoMirroring(nnUNetTrainer):
 
 class nnUNetTrainer_8000epochs_NoMirroring(nnUNetTrainer):
     def __init__(self, plans: dict, configuration: str, fold: int, dataset_json: dict, 
-                 device: torch.device = torch.device('cuda')):
+                 device: torch.device = torch.device(os.environ.get('PYTORCH_DEVICE', 'cuda'))):
         super().__init__(plans, configuration, fold, dataset_json, device)
         self.num_epochs = 8000
 

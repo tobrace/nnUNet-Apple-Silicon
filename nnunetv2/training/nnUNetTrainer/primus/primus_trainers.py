@@ -1,6 +1,7 @@
 from abc import abstractmethod
 from typing import List, Tuple, Union
 import torch
+import os
 from torch import nn, autocast
 from dynamic_network_architectures.architectures.primus import Primus
 from nnunetv2.training.nnUNetTrainer.nnUNetTrainer import nnUNetTrainer
@@ -22,7 +23,7 @@ class AbstractPrimus(nnUNetTrainer_warmup):
         configuration: str,
         fold: int,
         dataset_json: dict,
-        device: torch.device = torch.device("cuda"),
+        device: torch.device = torch.device(os.environ.get('PYTORCH_DEVICE', 'cuda')),
     ):
         super().__init__(plans, configuration, fold, dataset_json, device)
         self.initial_lr = 3e-4
@@ -207,7 +208,7 @@ class nnUNet_Primus_M_Trainer_BS8(nnUNet_Primus_M_Trainer):
         configuration: str,
         fold: int,
         dataset_json: dict,
-        device: torch.device = torch.device("cuda"),
+        device: torch.device = torch.device(os.environ.get('PYTORCH_DEVICE', 'cuda')),
     ):
         super().__init__(plans, configuration, fold, dataset_json, device)
         self.configuration_manager.configuration["batch_size"] = 8
@@ -221,7 +222,7 @@ class nnUNet_Primus_M_Trainer_BS8_2e4(nnUNet_Primus_M_Trainer):
         configuration: str,
         fold: int,
         dataset_json: dict,
-        device: torch.device = torch.device("cuda"),
+        device: torch.device = torch.device(os.environ.get('PYTORCH_DEVICE', 'cuda')),
     ):
         super().__init__(plans, configuration, fold, dataset_json, device)
         self.initial_lr = 2e-4
@@ -236,7 +237,7 @@ class nnUNet_Trainer_BS8(nnUNetTrainer):
         configuration: str,
         fold: int,
         dataset_json: dict,
-        device: torch.device = torch.device("cuda"),
+        device: torch.device = torch.device(os.environ.get('PYTORCH_DEVICE', 'cuda')),
     ):
         super().__init__(plans, configuration, fold, dataset_json, device)
         self.configuration_manager.configuration["batch_size"] = 8
@@ -276,7 +277,7 @@ class _Primus_S_96_BS1(nnUNet_Primus_S_Trainer):
         configuration: str,
         fold: int,
         dataset_json: dict,
-        device: torch.device = torch.device("cuda"),
+        device: torch.device = torch.device(os.environ.get('PYTORCH_DEVICE', 'cuda')),
     ):
         plans["configurations"][configuration]["patch_size"] = (96, 96, 96)  # As per repository
         plans["configurations"][configuration]["batch_size"] = 1
@@ -290,7 +291,7 @@ class _Primus_B_96_BS1(nnUNet_Primus_B_Trainer):
         configuration: str,
         fold: int,
         dataset_json: dict,
-        device: torch.device = torch.device("cuda"),
+        device: torch.device = torch.device(os.environ.get('PYTORCH_DEVICE', 'cuda')),
     ):
         plans["configurations"][configuration]["patch_size"] = (96, 96, 96)  # As per repository
         plans["configurations"][configuration]["batch_size"] = 1
@@ -304,7 +305,7 @@ class _Primus_M_96_BS1(nnUNet_Primus_M_Trainer):
         configuration: str,
         fold: int,
         dataset_json: dict,
-        device: torch.device = torch.device("cuda"),
+        device: torch.device = torch.device(os.environ.get('PYTORCH_DEVICE', 'cuda')),
     ):
         plans["configurations"][configuration]["patch_size"] = (96, 96, 96)  # As per repository
         plans["configurations"][configuration]["batch_size"] = 1
@@ -318,7 +319,7 @@ class _Primus_L_48_BS1(nnUNet_Primus_L_Trainer):
         configuration: str,
         fold: int,
         dataset_json: dict,
-        device: torch.device = torch.device("cuda"),
+        device: torch.device = torch.device(os.environ.get('PYTORCH_DEVICE', 'cuda')),
     ):
         plans["configurations"][configuration]["patch_size"] = (48, 48, 48)  # As per repository
         plans["configurations"][configuration]["batch_size"] = 1

@@ -8,7 +8,7 @@ import torch.cuda
 import torch.distributed as dist
 import torch.multiprocessing as mp
 from batchgenerators.utilities.file_and_folder_operations import join, isfile, load_json
-from nnunetv2.paths import nnUNet_preprocessed
+from nnunetv2.paths import nnUNet_preprocessed, default_device
 from nnunetv2.run.load_pretrained_weights import load_pretrained_weights
 from nnunetv2.training.nnUNetTrainer.nnUNetTrainer import nnUNetTrainer
 from nnunetv2.utilities.dataset_name_id_conversion import maybe_convert_to_dataset_name
@@ -34,7 +34,7 @@ def get_trainer_from_args(dataset_name_or_id: Union[int, str],
                           fold: int,
                           trainer_name: str = 'nnUNetTrainer',
                           plans_identifier: str = 'nnUNetPlans',
-                          device: torch.device = torch.device('cuda')):
+                          device: torch.device = torch.device(default_device)):
     # load nnunet class and do sanity checks
     nnunet_trainer = recursive_find_python_class(join(nnunetv2.__path__[0], "training", "nnUNetTrainer"),
                                                 trainer_name, 'nnunetv2.training.nnUNetTrainer')
@@ -145,7 +145,7 @@ def run_training(dataset_name_or_id: Union[str, int],
                  only_run_validation: bool = False,
                  disable_checkpointing: bool = False,
                  val_with_best: bool = False,
-                 device: torch.device = torch.device('cuda')):
+                 device: torch.device = torch.device(default_device)):
     if plans_identifier == 'nnUNetPlans':
         print("\n############################\n"
               "INFO: You are using the old nnU-Net default plans. We have updated our recommendations. "
@@ -244,7 +244,7 @@ def run_training_entry():
     parser.add_argument('--disable_checkpointing', action='store_true', required=False,
                         help='[OPTIONAL] Set this flag to disable checkpointing. Ideal for testing things out and '
                              'you dont want to flood your hard drive with checkpoints.')
-    parser.add_argument('-device', type=str, default='cuda', required=False,
+    parser.add_argument('-device', type=str, default=default_device, required=False,
                     help="Use this to set the device the training should run with. Available options are 'cuda' "
                          "(GPU), 'cpu' (CPU) and 'mps' (Apple M1/M2). Do NOT use this to set which GPU ID! "
                          "Use CUDA_VISIBLE_DEVICES=X nnUNetv2_train [...] instead!")
